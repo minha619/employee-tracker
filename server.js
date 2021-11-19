@@ -28,7 +28,7 @@ function initialPrompt() {
         name: "options",
         message: "What would you like to do?",
         choices: [
-            "View all deapartments",
+            "View all departments",
             "View all roles",
             "View all employees",
             "Add a department",
@@ -77,7 +77,7 @@ function initialPrompt() {
 
 
 function viewDepartments() {
-    console.log("View all departments");
+    console.log("\n View all departments \n");
 
     let query = 'SELECT * FROM department;';
     connection.query(query, function (err, res) {
@@ -88,14 +88,51 @@ function viewDepartments() {
     });
 }
 
-// function viewEmployees(){
-//     console.log("View all employees");
+function viewRoles() {
+    console.log("\n View all roles \n");
 
-//     let query = 'SELECT * FROM employee;';
-//     connection.query(query, function (err, res){
-//         if (err) throw err;
-//         console.table(res);
+    let query = 'SELECT * FROM role;';
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
 
-//         initialPrompt();
-//     })
-// }
+        initialPrompt();
+    })
+}
+
+
+function viewEmployees() {
+    console.log("\n View all employees \n");
+
+    let query = 'SELECT * FROM employee;';
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+
+        initialPrompt();
+    })
+}
+
+function addDepartment() {
+    // console.log("\n Add a department \n");
+
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "departmentName",
+            message: "\n What is the name of a new department? \n"
+        }
+    ])
+    .then (function (answer){
+        
+        let query = 'INSERT INTO department (id, name) VALUES (?)';
+        connection.query(query, function (err, res) {
+            console.table(res);
+    
+            initialPrompt();
+        });
+    })
+
+ 
+}
+

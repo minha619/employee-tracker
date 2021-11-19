@@ -15,13 +15,14 @@ const connection = mysql.createConnection(
     console.log('Connected to the employees database.')
 );
 
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log('Database connected.');
-    initalPrompt();
-});
+initialPrompt();
+// connection.connect(function (err) {
+//     if (err) throw err;
+//     console.log('Database connected.');
+//     initialPrompt();
+// });
 
-function initalPrompt() {
+function initialPrompt() {
     inquirer.prompt({
         type: "list",
         name: "options",
@@ -38,7 +39,7 @@ function initalPrompt() {
         ]
     })
         .then((options) => {
-            switch (options) {
+            switch (options.options) {
                 case "View all departments":
                     viewDepartments();
                     break;
@@ -83,7 +84,7 @@ function viewDepartments() {
         if (err) throw err;
         console.table(res);
 
-        initalPrompt();
+        initialPrompt();
     });
 }
 
@@ -95,6 +96,6 @@ function viewDepartments() {
 //         if (err) throw err;
 //         console.table(res);
 
-//         initalPrompt();
+//         initialPrompt();
 //     })
 // }

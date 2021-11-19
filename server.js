@@ -5,7 +5,7 @@ const consoleTable = require('console.table');
 const connection = mysql.createConnection(
     {
         host: 'localhost',
-        part: 3001,
+        // port: 3001,
         // Your MySQL username,
         user: 'root',
         // Your MySQL password
@@ -125,14 +125,46 @@ function addDepartment() {
     ])
     .then (function (answer){
         
-        let query = 'INSERT INTO department (id, name) VALUES (?)';
-        connection.query(query, function (err, res) {
-            console.table(res);
+        let query = 'INSERT INTO department (name) VALUES (?)';
+        connection.query(query, [answer.departmentName], function (err, res) {
+            console.log('New department successfully added!');
     
             initialPrompt();
         });
     })
-
- 
 }
 
+function addRole() {
+    // // console.log("\n Add a role \n");
+    // const departmentList = viewDepartments();
+
+    const department = connection.query('SELECT * FROM department;');
+
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "roleName",
+            message: "\n What is the new role? \n"
+        },
+        {
+            type: "input",
+            name: "roleSalary",
+            message: "\n What is the new role's salary? \n"
+        },
+        {
+            type: "list",
+            name: "roleDeaprtment",
+            message: "\n Choose the new role's department. \n",
+            // choices: department
+        }
+    ])
+    .then (function (answer){
+    
+        let query = 'INSERT INTO role (title, salary, department_id) VALUES (?)';
+        connection.query(query, [answer.roleName, answer.roleSalary], function (err, res) {
+            console.log('New role successfully added!');
+    
+            initialPrompt();
+        });
+    })
+}
